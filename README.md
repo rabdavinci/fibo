@@ -13,14 +13,19 @@ git clone git@github.com:rabdavinci/fibo.git .
 2. Run microservice
 
 ```
-$ go run cmd/main.go
+$ make build
+$ make run
 ```
 
-4. Calculate fibonacci slice
+3. Calculate fibonacci slice
 
 ```
 POST localhost:9090
 BODY {"x":5,"y":10}
+```
+4. Run tests
+```
+$ make test
 ```
 
 ## TODO
