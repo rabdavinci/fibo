@@ -9,18 +9,28 @@ import (
 )
 
 type Fibo struct {
-	l *log.Logger
+	l  *log.Logger
+	fc data.FiboCache
 }
 
-func NewFibo(l *log.Logger) *Fibo {
-	return &Fibo{l}
+func NewFibo(l *log.Logger, fc data.FiboCache) *Fibo {
+	return &Fibo{l, fc}
 }
 
 func (f *Fibo) CalculateSlice(rw http.ResponseWriter, r *http.Request) {
 	f.l.Println("Handle POST")
 
 	fi := r.Context().Value(KeyFibo{}).(data.FiboInterval)
-	fl := data.CalculateSlice(&fi)
+	var fl = data.FiboList{}
+	cv, ok := f.fc[[2]int{fi.X, fi.Y}]
+	if !ok {
+		fl = data.CalculateSlice(&fi)
+		f.fc[[2]int{fi.X, fi.Y}] = fl
+		f.l.Printf("Generated for x=%v y=%v value%v", fi.X, fi.Y, fl)
+	} else {
+		fl = cv
+		f.l.Printf("Got from Cache for x=%v y=%v value%v", fi.X, fi.Y, fl)
+	}
 
 	err := fl.ToJSON(rw)
 	if err != nil {

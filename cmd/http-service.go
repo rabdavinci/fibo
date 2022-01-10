@@ -9,12 +9,15 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/rabdavinci/fibo/data"
 	"github.com/rabdavinci/fibo/handlers"
 )
 
 func main() {
 	l := log.New(os.Stdout, "fibo-api ", log.LstdFlags)
-	lh := handlers.NewFibo(l)
+	fc := data.FiboCache{}
+
+	lh := handlers.NewFibo(l, fc)
 
 	sm := mux.NewRouter()
 

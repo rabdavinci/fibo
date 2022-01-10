@@ -5,6 +5,9 @@ import (
 	"io"
 )
 
+// move cache to redis later
+type FiboCache map[[2]int][]int
+
 type FiboInterval struct {
 	X int `json:"x"`
 	Y int `json:"y"`
@@ -18,9 +21,9 @@ type FiboList []int
 // this reduces allocations and the overheads of the service
 //
 // https://golang.org/pkg/encoding/json/#NewEncoder
-func (l *FiboList) ToJSON(w io.Writer) error {
+func (fl *FiboList) ToJSON(w io.Writer) error {
 	e := json.NewEncoder(w)
-	return e.Encode(l)
+	return e.Encode(fl)
 }
 
 func (fi *FiboInterval) FromJSON(r io.Reader) error {
