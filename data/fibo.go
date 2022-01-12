@@ -6,14 +6,14 @@ import (
 )
 
 // move cache to redis later
-type FiboCache map[[2]int][]int
+type FiboCache map[[2]int64][]int64
 
 type FiboInterval struct {
-	X int `json:"x"`
-	Y int `json:"y"`
+	X int64 `json:"x"`
+	Y int64 `json:"y"`
 }
 
-type FiboList []int
+type FiboList []int64
 
 // ToJSON serializes the contents of the collection to JSON
 // NewEncoder provides better performance than json.Unmarshal as it does not

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,7 +11,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/rabdavinci/fibo/data"
+	pb "github.com/rabdavinci/fibo/gen/proto"
 	"github.com/rabdavinci/fibo/handlers"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -37,12 +40,29 @@ func main() {
 
 	// start the server
 	go func() {
-		l.Println("Starting server on port 9090")
+		l.Println("Starting http server on port 9090")
 
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Printf("Error starting server: %s\n", err)
 			os.Exit(1)
+		}
+	}()
+
+	// create grpc server
+	listener, err := net.Listen("tcp", "localhost:8080")
+	if err != nil {
+		l.Fatalln(err)
+	}
+	grpcserver := grpc.NewServer()
+
+	pb.RegisterFiboApiServer(grpcserver, &handlers.FiboApiServer{})
+
+	go func() {
+		l.Println("Starting grpc server on port 8080")
+		err = grpcserver.Serve(listener)
+		if err != nil {
+			l.Fatalln(err)
 		}
 	}()
 

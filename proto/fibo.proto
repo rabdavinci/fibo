@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package main;
+option go_package = "./proto";
+
+service FiboApi {
+  rpc CalculateList(FiboRequest) returns (FiboResponse) {}
+}
+
+message FiboRequest {
+  int64 x = 1;
+  int64 y = 2;
+}
+
+message FiboResponse {
+  string list = 1;
+}
+

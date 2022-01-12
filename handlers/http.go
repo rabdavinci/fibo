@@ -22,10 +22,10 @@ func (f *Fibo) CalculateSlice(rw http.ResponseWriter, r *http.Request) {
 
 	fi := r.Context().Value(KeyFibo{}).(data.FiboInterval)
 	var fl = data.FiboList{}
-	cv, ok := f.fc[[2]int{fi.X, fi.Y}]
+	cv, ok := f.fc[[2]int64{fi.X, fi.Y}]
 	if !ok {
 		fl = data.CalculateSlice(&fi)
-		f.fc[[2]int{fi.X, fi.Y}] = fl
+		f.fc[[2]int64{fi.X, fi.Y}] = fl
 		f.l.Printf("Generated for x=%v y=%v value%v", fi.X, fi.Y, fl)
 	} else {
 		fl = cv

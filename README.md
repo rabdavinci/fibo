@@ -13,6 +13,7 @@ git clone git@github.com:rabdavinci/fibo.git .
 2. Run microservice
 
 ```
+$ make gen-proto
 $ make build
 $ make run
 ```
@@ -28,9 +29,11 @@ BODY {"x":5,"y":10}
 $ make test
 ```
 
+5. Do GRPC Request
+
 ## TODO
 
-1. Add GRPC server
+1. Finish logging
 2. Use config package, env for keeping params
 3. Move cache to Redis or Memcache
 4. Dockerize
