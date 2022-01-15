@@ -1,22 +1,20 @@
 package data
 
-func Fibonacci(x, y int64) FiboList {
-	var list = FiboList{}
-	var i int64
-	if x < 0 || y < 0 || x > y {
-		return list
-	}
-	if x == 0 && y == 0 {
-		return append(list, 0)
-	}
-	var n1, n2 int64
-	n1 = 0
-	n2 = 1
+import (
+	"math/big"
+)
 
-	for i = 0; i < y; i++ {
-		list = append(list, n1)
-		n1, n2 = n2, n1+n2
-	}
+func Fibonacci(x, y int64) string {
+	a := big.NewInt(0)
+	b := big.NewInt(1)
 
-	return list[x:]
+	var limit big.Int
+	limit.Exp(big.NewInt(10), big.NewInt(y), nil)
+	for a.Cmp(&limit) < 0 {
+		// Compute the next Fibonacci number, storing it in a.
+		a.Add(a, b)
+		// Swap a and b so that b is the next number in the sequence.
+		a, b = b, a
+	}
+	return a.String()
 }

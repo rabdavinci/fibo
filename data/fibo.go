@@ -5,15 +5,14 @@ import (
 	"io"
 )
 
-// move cache to redis later
-type FiboCache map[[2]int64][]int64
-
 type FiboInterval struct {
 	X int64 `json:"x"`
 	Y int64 `json:"y"`
 }
 
-type FiboList []int64
+type FiboList struct {
+	List string `json:"list"`
+}
 
 // ToJSON serializes the contents of the collection to JSON
 // NewEncoder provides better performance than json.Unmarshal as it does not
@@ -31,6 +30,6 @@ func (fi *FiboInterval) FromJSON(r io.Reader) error {
 	return e.Decode(fi)
 }
 
-func CalculateSlice(fi *FiboInterval) FiboList {
+func CalculateSlice(fi *FiboInterval) string {
 	return Fibonacci(fi.X, fi.Y)
 }
